@@ -1,0 +1,111 @@
+---
+title: "Problem 2: Instacart Dashboard"
+author: "Wen Li_wl3013"
+date: "2025-10-25"
+output: 
+   flexdashboard::flex_dashboard:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(p8105.datasets)
+  data("instacart")
+library(flexdashboard)
+library(plotly)
+```
+
+Column {data-width=500}
+---
+```{r}
+# Data cleaning: 
+instacart_clean_df <- instacart |> 
+  mutate(
+    order_dow = factor(
+      order_dow,
+      levels = 0:6,
+      labels = c("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+      ),
+  order_hour_of_day = as.numeric(order_hour_of_day)
+  )
+```
+
+
+### Line plot: Distribution of orders across hours of the day
+
+```{r}
+instacart_clean_df |> 
+  count(order_hour_of_day) |>
+  plot_ly(x = ~order_hour_of_day, y = ~n, type = "scatter", mode = "lines+markers")
+```
+
+
+Column {data-width=500}
+---
+### Bar plot: Top aisles overall
+
+```{r}
+# Find top 15 aisles by number of items
+top_aisles_df <- instacart_clean_df |>
+  count(aisle, name = "n_items") |>
+  arrange(desc(n_items)) |>
+  slice_head(n = 15) |>
+  mutate(aisle = fct_reorder(aisle, n_items))
+
+# Create the bar plot
+plot_ly(
+  data = top_aisles_df,
+  x = ~n_items,
+  y = ~aisle,
+  type = "bar",
+  orientation = "h"
+  ) |>
+  layout(
+    xaxis = list(title = "Number of items ordered"),
+    yaxis = list(title = ""),
+    title = "Most popular aisles (top 15)"
+    )
+```
+
+
+### Box plot: Distribution of days_since_prior_order by department
+
+```{r}
+# Randomly sample
+set.seed(123)
+
+dept_plot_df <- instacart_clean_df |> 
+  filter(!is.na(days_since_prior_order)) |> 
+  group_by(department) |> 
+  mutate(dept_n = n()) |> 
+  ungroup() |> 
+  # Keep only departments with at least 2000 products ordered 
+  filter(dept_n >= 2000) |> 
+  group_by(department) |> 
+  group_modify(~ slice_sample(.x, n = min(500, nrow(.x)))) |> 
+  ungroup() |> 
+  # Reorder departments by median 
+  mutate( 
+    department = fct_reorder( 
+      department, 
+      days_since_prior_order, 
+      .fun = median, 
+      .desc = TRUE 
+      ) 
+    ) 
+
+# Create the boxplot 
+plot_ly( 
+  data = dept_plot_df, 
+  x = ~department, 
+  y = ~days_since_prior_order, 
+  type = "box", 
+  color = ~department
+  ) |> 
+  layout(
+    title = "Time Between Orders by Department",
+    xaxis = list(title = ""),
+    yaxis = list(title = "Days Since Prior Order")
+  )
+```
+

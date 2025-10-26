@@ -1,0 +1,13 @@
+---
+title: "Welcome"
+output: html_document
+---
+
+### Hello!
+
+
+Welcome to my personal website.  
+I'm a biostatistics graduate student interested in data analysis, digital health, and clinical decision support.
+
+This site gives a quick intro to who I am and what kind of work I do.
+Use the About page to see my academic background and experience. 

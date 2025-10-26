@@ -1,0 +1,28 @@
+---
+title: "About"
+output: html_document
+---
+
+### Academic and Professional Experience
+
+**Education:**  
+  MPH in Biostatistics, Columbia University, Mailman School of Public Health  
+  B.S. in Biological Science, Sun Yat-sen University   
+
+
+**Research / Technical Work**  
+  - GWAS / PRS analysis (genetic risk modeling)  
+  - Cost-effectiveness and clinical decision modeling  
+  - Digital health / remote monitoring evaluation
+
+
+**Coursework and Projects**
+
+Here are some of my recent coursework repositories for the P8105 class:
+- [HW2: Data Wrangling](https://github.com/wl-85/p8105_hw2_wl3013.git)
+- [HW3: Visualization](https://github.com/wl-85/p8105_hw3_wl3013.git)
+- [HW4: Website Project](https://github.com/wl-85/p8105_hw4_wl3013_github.io.git)
+
+
+**Skills**  
+R, SAS, Stata, survival analysis, regression modeling, data cleaning
